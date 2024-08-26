@@ -1,0 +1,6 @@
+
+application.yml
+#-----------------------------------------------------------------------------------------------------
+logging:
+  level:
+    com.example.catalogservice: DEBUG

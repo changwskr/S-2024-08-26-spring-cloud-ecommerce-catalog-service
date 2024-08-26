@@ -1,0 +1,8 @@
+● JPA 설정을 읽어면서 SQL을 자동실행하고자 할 경우 셋팅 
+(application.xml)
+  jpa:
+    hibernate:
+      ddl-auto: create-update
+      generate-ddl: true 
+
+이렇게 설정해놓으면 application.xml과 같은 위치에 있는 data.sql 파일을 읽어서 수행한다.      

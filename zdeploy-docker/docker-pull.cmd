@@ -1,0 +1,1 @@
+docker pull changwskr/catalog-service:1.0

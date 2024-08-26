@@ -1,0 +1,20 @@
+
+1. 강제 주문을 낸다.
+(post) http://127.0.0.1:8000/order-service/58637473-1c45-463e-8378-f9eb09cb279c/orders
+{
+	"productId": "CATALOG-0001",
+	"qty": 10,
+	"unitPrice": 2000
+}
+
+2. order pub를 실행한다.
+	T1 : 
+	        {        	
+	//        	kafkaProducer.send("example-order-topic", orderDto);
+	        }
+3. catalog는 sub를 실행한다.
+    @KafkaListener(topics="example-order-topic")
+    public void processMessage(String kafkaMessage) throws Exception {
+
+4. 수량을 확인한다. 
+(get)http://127.0.0.1:8000/catalog-service/catalogs

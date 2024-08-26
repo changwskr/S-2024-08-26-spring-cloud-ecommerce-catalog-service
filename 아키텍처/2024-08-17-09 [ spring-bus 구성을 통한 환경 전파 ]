@@ -1,0 +1,126 @@
+spring-config-service의 refresh 기능은 p2p 기능으로 각 msa 서비스로 환경을 전파한다.
+이것을 sping-cloud-bus를 이용해서 rabbitmq 활용해서 전체 서비스로 전파해보자
+
+08-17-09
+#-----------------------------------------------------------------------------------------------------------------------
+[사전설치]
+Erlang 설치
+    # 설치
+    # 시스템 환경 변수 잡기 - Path 추가
+            C:\Programming(23-08-15)\New folder\Erlang OTP\erts-15.0.1
+rabbitMQ 설치
+    # 시스템 환경 변수 - Path 추가
+            C:\Programming(23-08-15)\RabbitMQ Server\rabbitmq_server-3.13.6\sbin
+    # 플러그인 설치 -
+            PS C:\Programming(23-08-15)\RabbitMQ Server\rabbitmq_server-3.13.6\sbin> ./rabbitmq-plugins.bat enable rabbitmq_management
+            Enabling plugins on node rabbit@jws:
+            rabbitmq_management
+            The following plugins have been configured:
+              rabbitmq_management
+              rabbitmq_management_agent
+              rabbitmq_web_dispatch
+            Applying plugin configuration to rabbit@jws...
+            The following plugins have been enabled:
+              rabbitmq_management
+              rabbitmq_management_agent
+              rabbitmq_web_dispatch
+    # 접속
+            http://127.0.0.1:15672 (guest/guest)
+#-----------------------------------------------------------------------------------------------------------------------
+[spring-config-service]
+    [pom.xml]
+            #-----------------------------------------------------------------------------------------------------------
+            		<dependency>
+            			<groupId>org.springframework.boot</groupId>
+            			<artifactId>spring-boot-starter-actuator</artifactId>
+            		</dependency>
+
+            		<dependency>
+            			<groupId>org.springframework.cloud</groupId>
+            			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+            		</dependency>
+            #-----------------------------------------------------------------------------------------------------------
+    [application.yaml]
+            #-----------------------------------------------------------------------------------------------------------
+              spring:
+                application:
+                  name: config-service
+
+                rabbitmq:
+                  host: 127.0.0.1
+                  port: 5672
+                  username: guest
+                  password: guest
+
+                management:
+                  endpoints:
+                    web:
+                      exposure:
+                        include: health, busrefresh, beans, httptrace, busrefresh
+
+            #-----------------------------------------------------------------------------------------------------------
+    [프로그램]
+            #-----------------------------------------------------------------------------------------------------------
+            #-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------
+[user-service]
+    [pom.xml]
+            #-----------------------------------------------------------------------------------------------------------
+                    <dependency>
+                        <groupId>org.springframework.cloud</groupId>
+                        <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+                    </dependency>
+            #-----------------------------------------------------------------------------------------------------------
+    [application.yaml]
+            #-----------------------------------------------------------------------------------------------------------
+              spring:
+                application:
+                  name: config-service
+
+                rabbitmq:
+                  host: 127.0.0.1
+                  port: 5672
+                  username: guest
+                  password: guest
+
+                management:
+                  endpoints:
+                    web:
+                      exposure:
+                        include: health, busrefresh, beans, httptrace, busrefresh
+            #-----------------------------------------------------------------------------------------------------------
+    [프로그램]
+            #-----------------------------------------------------------------------------------------------------------
+            #-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------
+[gateway-service]
+    [pom.xml]
+            #-----------------------------------------------------------------------------------------------------------
+                    <dependency>
+                        <groupId>org.springframework.cloud</groupId>
+                        <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+                    </dependency>
+            #-----------------------------------------------------------------------------------------------------------
+    [application.yaml]
+            #-----------------------------------------------------------------------------------------------------------
+              spring:
+                application:
+                  name: config-service
+
+                rabbitmq:
+                  host: 127.0.0.1
+                  port: 5672
+                  username: guest
+                  password: guest
+
+                management:
+                  endpoints:
+                    web:
+                      exposure:
+                        include: health, busrefresh, beans, httptrace, busrefresh
+            #-----------------------------------------------------------------------------------------------------------
+    [프로그램]
+            #-----------------------------------------------------------------------------------------------------------
+            #-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------
+
